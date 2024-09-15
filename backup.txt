@@ -1,0 +1,110 @@
+#SandCraft: Ravine Rider
+#MlgEpicCar
+#https://youtu.be/ZV8TNrwqG1Y
+
+import random 
+import pygame
+
+from pygame.locals import QUIT
+
+pygame.init()
+
+#Game Constants
+HEIGHT = 600 #used to be 300
+WIDTH = 900 #used to be 450
+
+white = (255, 255, 255)
+black = (0, 0, 0)
+red = (255, 0, 0)
+green = (0, 255, 0)
+blue = (0, 0, 255)
+
+#Game Variables
+score = 0
+jet_x = 50
+jet_y = 50
+y_change = 0
+x_change = 0
+gravity = 0.5
+bad_guys = [300, 450, 600]
+bad_guys_speed = 2
+active = True
+background = black
+fps = 60
+# idk why font isn't working
+#font = pygame.font.Font('freesandbold.ttf', 16)
+timer = pygame.time.Clock()
+
+screen = pygame.display.set_mode([WIDTH, HEIGHT])
+pygame.display.set_caption('SandCraft: Ravine Rider')
+
+running = True
+while running:
+  timer.tick(fps)
+  screen.fill(background)
+  floor = pygame.draw.rect(screen, white, [0, 220, WIDTH, 5])
+  roof = pygame.draw.rect(screen, white, [0, 0, WIDTH, 5])
+  jet = pygame.draw.rect(screen, green, [jet_x, jet_y, 20, 20])
+  bad_guys0 = pygame.draw.rect(screen, red, [bad_guys[0], 200, 20, 20])
+  bad_guys1 = pygame.draw.rect(screen, blue, [bad_guys[1], 200, 20, 20])
+  bad_guys2 = pygame.draw.rect(screen, white, [bad_guys[2], 200, 20, 20])
+
+  # this tracks all imputs from keyboard and mouse
+  for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+      running = False
+
+    if event.type == pygame.KEYDOWN:
+      if event.key == pygame.K_SPACE and y_change == 0:
+        y_change = 18
+
+      if event.key == pygame.K_d:
+        x_change = 2
+      if event.key == pygame.K_a:
+        x_change = -2
+
+      if event.key == pygame.K_RIGHT:
+        x_change = 2
+      if event.key == pygame.K_LEFT:
+        x_change = -2
+
+    if event.type == pygame.KEYUP:
+
+      if event.key == pygame.K_d:
+        x_change = 0
+      if event.key == pygame.K_a:
+        x_change = 0
+
+      if event.key == pygame.K_RIGHT:
+        x_change = 0
+      if event.key == pygame.K_LEFT:
+        x_change = 0
+
+  for i in range(len(bad_guys)):
+    if active:
+      bad_guys[i] -= bad_guys_speed
+      if bad_guys[i] < -20:
+        bad_guys[i] = random.randint(470, 570)
+        score += 1
+        #shoutout to miles hart
+      if jet.colliderect(bad_guys0) or jet.colliderect(bad_guys1) or jet.colliderect(bad_guys2):
+        active = False
+      
+        
+  if y_change > 0 or jet_y < 200:
+    jet_y -= y_change
+    y_change -= gravity
+  if jet_y > 200:
+    jet_y = 200
+  if jet_y == 200 and y_change < 0:
+    y_change = 0
+
+  if 0 <= jet_x <= 430:
+    jet_x += x_change
+  if jet_x < 0:
+    jet_x = 0
+  if jet_x > 430:
+    jet_x = 430
+    
+  pygame.display.flip()
+pygame.quit()

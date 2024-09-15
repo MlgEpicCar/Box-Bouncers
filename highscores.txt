@@ -1,0 +1,13 @@
+Glitchless:
+(Not taking advantage of any bugs in the code)
+MlgEpicCar: 33,700
+MlgEpicCar: 8,800
+Tangmar: ∞
+
+1=2:
+(One Player controlling two cubes)
+MlgEpicCar: 13,800
+
+With Glitches:
+(Anything is allowed)
+MlgEpicCar: 3,114,000
